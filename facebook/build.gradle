@@ -1,0 +1,61 @@
+apply plugin: 'com.android.library'
+
+project.group 'com.facebook.android'
+
+project.ext.name = 'Facebook-Android-SDK'
+project.ext.artifactId = "facebook-android-sdk"
+project.ext.description = 'Facebook Android SDK'
+project.ext.url = 'https://github.com/facebook/facebook-android-sdk'
+
+dependencies {
+    // Facebook Dependencies
+    compile project(':facebook-core')
+    compile project(':facebook-common')
+    compile project(':facebook-login')
+    compile project(":facebook-share")
+    compile project(":facebook-places")
+    compile project(":facebook-applinks")
+    compile project(":facebook-messenger")
+
+    // Unit Tests
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.3'
+
+    def powerMockVersion = '1.6.1'
+    testCompile "org.powermock:powermock-api-mockito:$powerMockVersion"
+    testCompile "org.powermock:powermock-module-junit4:$powerMockVersion"
+    testCompile "org.powermock:powermock-module-junit4-rule:$powerMockVersion"
+    testCompile "org.powermock:powermock-classloading-xstream:$powerMockVersion"
+
+    // Connected Tests
+    androidTestCompile 'org.mockito:mockito-core:1.10.19'
+    androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
+    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
+}
+
+android {
+    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
+    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        minSdkVersion Integer.parseInt(project.ANDROID_BUILD_MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+        consumerProguardFiles 'proguard-project.txt'
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    aaptOptions {
+        additionalParameters "--no-version-vectors"
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+apply from: "${rootDir}/maven.gradle"
